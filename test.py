@@ -20,4 +20,4 @@ class pig(animal):
 pluf = pig()
 pluf.function()
 
-print(pluf)
+print(type(pluf))

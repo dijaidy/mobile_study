@@ -77,7 +77,7 @@ class Caption:
             Caption.caption_bundle_dict[caption_bundle].append(self)
 
 
-class BigCategory(Caption):
+class Menu(Caption):
 
     # 초기 활성화된 카테고리는 없음
     activated_category = 0  # 입력받아야함
@@ -111,18 +111,18 @@ class BigCategory(Caption):
         self.__linked_small_category = Caption.caption_bundle_dict[self.__text]
 
         # 처음 정의되는 큰 카테고리에 대한 활성화 작업
-        if BigCategory.activated_category == 0:  # 아직 활성화된 카테고리 없으면
-            BigCategory.activated_category = self  # 처음 정의되는 객체를 활성화(기존의 객체 자체가 변화함(파괴적임))
-            BigCategory.deactivated_font_size = self.__size  # 기존의 폰트 사이즈 미리 저장
-            BigCategory.activated_category.__size = BigCategory.activated_font_size  # 글씨크기는 키우기
+        if Menu.activated_category == 0:  # 아직 활성화된 카테고리 없으면
+            Menu.activated_category = self  # 처음 정의되는 객체를 활성화(기존의 객체 자체가 변화함(파괴적임))
+            Menu.deactivated_font_size = self.__size  # 기존의 폰트 사이즈 미리 저장
+            Menu.activated_category.__size = Menu.activated_font_size  # 글씨크기는 키우기
 
     def activate_category(self):
         # 기존의 활성화 카테고리에 대한 작업
-        BigCategory.activated_category.__size = BigCategory.deactivated_font_size  # 글씨크기 원래대로
+        Menu.activated_category.__size = Menu.deactivated_font_size  # 글씨크기 원래대로
 
         # 새 활성화 카테고리에 대한 작업
-        BigCategory.activated_category = self  # 객체를 활성화(기존의 객체 자체가 변화함(파괴적임))
-        BigCategory.activated_category.__size = 25  # 글씨크기는 키우고
+        Menu.activated_category = self  # 객체를 활성화(기존의 객체 자체가 변화함(파괴적임))
+        Menu.activated_category.__size = 25  # 글씨크기는 키우고
 
     def write_caption(self):
         # 큰 카테고리 그림
@@ -131,7 +131,7 @@ class BigCategory(Caption):
         screen.blit(final_caption, self.__pos)
 
         # 현재 객체가 활성화된 객체면
-        if BigCategory.activated_category == self:
+        if Menu.activated_category == self:
             # 링크된 작은카테고리 표시
             for linked_small_category in self.__linked_small_category:
                 linked_small_category.write_caption()
@@ -149,7 +149,7 @@ class BigCategory(Caption):
             # self.click_checking_rect =((윗점x, 아랫점x), (윗점y, 아랫점y))
 
 
-class SmallCategory(Caption):
+class SubMenu(Caption):
     def __init__(
         self,
         text,
@@ -180,8 +180,28 @@ class SmallCategory(Caption):
         pass
 
 
+class FaboriteTextbookMenu(Menu):
+    pass
+
+
+class StudyPlanMenu(Menu):
+    pass
+
+
+class StudyRoomMenu(Menu):
+    pass
+
+
+class CommunityMenu(Menu):
+    pass
+
+
+class AchievementMenu(Menu):
+    pass
+
+
 # 그림 관련 객체를 만들때 쓰는 클래스
-class Png:
+class Picture:
 
     # 그림 객체 생성 시 이미지와 위치 입력
     def __init__(self, object, pos, parameter=(0, 0)):
@@ -193,7 +213,7 @@ class Png:
         )
 
     # 그림 객체 그리기
-    def draw_Png(self):
+    def draw_Picture(self):
         screen.blit(self.__object, self.__pos)
 
 
@@ -202,7 +222,7 @@ class Png:
 
 
 # 텍스트 객체 정의
-# 처음 dday 표시
+## 처음 dday 표시
 if True:  # 시험기간이면
     d_day_exam_caption_x_pos_list = [20, 20]
     d_day_exam_caption_y_pos_list = [80, 100]
@@ -225,7 +245,7 @@ if True:  # 시험기간이면
         d_day_exam_caption.write_caption()
 
 
-# 큰 카테고리, 작은 카테고리 만들기
+## 큰 카테고리, 작은 카테고리 만들기
 big_category_list = []
 big_category_str_list = ["내교재 찜하기", "공부계획", "공부방", "커뮤니티", "현재성과"]
 
@@ -252,7 +272,7 @@ for small_category_str_tuple in small_category_str_list:
                 for i in range(0, len(small_category_str_tuple))
             ]  # 작은 카테고리 개수에 따라 위치정보 양을 달리함
         )  # 작은 카테고리의 위치정보
-        small_category = SmallCategory(
+        small_category = SubMenu(
             text=small_category_str_tuple[i],
             pos=small_category_pos_tuple[i],
             right_below_dot_pos=small_category_right_below_dot_pos_list[i],
@@ -265,9 +285,7 @@ for small_category_str_tuple in small_category_str_list:
 for i in range(0, len(big_category_str_list)):
     big_category_x_pos = ((screen_width / 5) * i) - 30
     big_category_y_pos = 50
-    big_category = BigCategory(
-        text=big_category_str_list[i], pos=(big_category_x_pos, big_category_y_pos)
-    )
+    big_category = Menu(text=big_category_str_list[i], pos=(big_category_x_pos, big_category_y_pos))
     big_category.sort_caption("start_scene", "big_category")
     big_category.write_caption()  # 빅 카테고리를 그리면, 연결된 작은 카테고리도 함께 그림
 
@@ -275,23 +293,23 @@ for i in range(0, len(big_category_str_list)):
 # 이미지 객체 정의
 # 시작화면 제목
 starting_caption_object = pygame.image.load(
-    "C:\\Users\\user\\Desktop\\내자료\\정보영재원\\MOBAIL_STUDY_prototype\\starting_caption.png"
+    "C:\\Users\\user\\Desktop\\내자료\\정보영재원\\MOBAIL_STUDY_prototype\\starting_caption.Picture"
 )
 
-starting_caption = Png(object=starting_caption_object, pos=(0, 0))
+starting_caption = Picture(object=starting_caption_object, pos=(0, 0))
 each_scene_dict["start_scene"].append(starting_caption)
 
 # 시작화면 배경
 starting_scene_background_object = pygame.image.load(
-    "C:\\Users\\user\\Desktop\\내자료\\정보영재원\\MOBAIL_STUDY_prototype\\starting_screen_background.png"
+    "C:\\Users\\user\\Desktop\\내자료\\정보영재원\\MOBAIL_STUDY_prototype\\starting_screen_background.Picture"
 )
 
-starting_scene_background = Png(object=starting_scene_background_object, pos=(0, 0))
+starting_scene_background = Picture(object=starting_scene_background_object, pos=(0, 0))
 each_scene_dict["start_scene"].append(starting_scene_background)
 
 # 미오튜터
 mio_object = pygame.image.load(
-    "C:\\Users\\user\\Desktop\\내자료\\정보영재원\\MOBAIL_STUDY_prototype\\미오.png"
+    "C:\\Users\\user\\Desktop\\내자료\\정보영재원\\MOBAIL_STUDY_prototype\\미오.Picture"
 )
 # 화면 전체크기의 객체가 아니기 때문에 사이즈 등의 지정이 필요
 mio_rect = mio_object.get_rect().size
@@ -301,7 +319,7 @@ mio_x_pos = (screen_width - mio_width) / 2
 mio_y_pos = screen_height - mio_height
 
 
-mio = Png(object=mio_object, pos=(mio_x_pos, mio_y_pos))
+mio = Picture(object=mio_object, pos=(mio_x_pos, mio_y_pos))
 
 
 # 이벤트 루프
@@ -315,10 +333,12 @@ while running:
     for event in pygame.event.get():  # 어떤 이벤트가 발생하였는가?
 
         if event.type == pygame.QUIT:  # 창이  닫히는 이벤트가 발생하였는가?
+            # 경고문구로 유저가 닫을지 선택하도록 하는 코드 #
+
             running = False  # 게임 진행중이 아님
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # 오른쪽 마우스를 클릭했는가?
             for object in each_scene_dict["start_scene"]:
-                if type(object) == SmallCategory:  # 텍스트가 여러개이면(작은 카테고리)
+                if type(object) == SubMenu:  # 텍스트가 여러개이면(작은 카테고리)
                     if (
                         mouse_pos >= object.click_checking_rect[0][0]
                         and mouse_pos <= object.click_checking_rect[0][1]
@@ -328,7 +348,7 @@ while running:
                             and mouse_pos <= object.click_checking_rect[1][1]
                         ):  # object를 클릭했으면
                             object.scene_transform()
-                elif type(object) == BigCategory:  # 텍스트가 한개면(큰 카테고리)
+                elif type(object) == Menu:  # 텍스트가 한개면(큰 카테고리)
                     if (
                         mouse_pos >= object.click_checking_rect[0][0]
                         and mouse_pos <= object.click_checking_rect[0][1]
@@ -341,9 +361,9 @@ while running:
 
     # 3. 게임 캐릭터 위치 정의
     # 5. 화면에 그리기
-    starting_caption.draw_Png()
-    mio.draw_Png()
-    starting_scene_background.draw_Png()
+    starting_caption.draw_Picture()
+    mio.draw_Picture()
+    starting_scene_background.draw_Picture()
 
     pygame.display.update()  # 게임화면을 다시 그리기!
 

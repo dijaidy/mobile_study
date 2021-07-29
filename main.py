@@ -1,36 +1,11 @@
 import os
 import pygame
-import datetime
-
-# 기본색깔 설정
-red = (255, 0, 0)
-yellow = (255, 255, 0)
-green = (128, 0, 0)
-blue = (000, 000, 255)
-white = (255, 255, 255)
-black = (0, 0, 0)
-light_blue = (121, 220, 255)
-light_green = (159, 255, 63)
-
-# 기본 초기화
-pygame.init()
-
-# 화면 크기 설정
-screen_width = 400  # 화면 가로 크기
-screen_height = 800  # 화면 세로 크기
-screen = pygame.display.set_mode((screen_width, screen_height))
-
-# 화면 타이틀 설정
-pygame.display.set_caption("MOBA.IL STUDY")
-
-# FPS
-clock = pygame.time.Clock()
+import time
+from setting import *
 
 
-# 배경 생성
-pygame.draw.rect(screen, white, [0, 0, screen_width, screen_height])
-
-###########################################################################################################
+# pygame 실행과 관련된 기본 설정
+set_pygame()
 
 # 텍스트 관련 객체를 생성하는 클래스
 each_scene_dict = {}
@@ -198,23 +173,6 @@ class CommunityMenu(Menu):
 
 class AchievementMenu(Menu):
     pass
-
-
-# 그림 관련 객체를 만들때 쓰는 클래스
-class Picture:
-
-    # 그림 객체 생성 시 이미지와 위치 입력
-    def __init__(self, object, pos, parameter=(0, 0)):
-        self.__object = object
-        self.__pos = pos
-        self.__click_checking_rect = (
-            (pos[0], pos[0] + parameter[0]),
-            (pos[1], pos[1] + parameter[1]),
-        )
-
-    # 그림 객체 그리기
-    def draw_Picture(self):
-        screen.blit(self.__object, self.__pos)
 
 
 ###########################################################################################################

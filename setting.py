@@ -91,3 +91,50 @@ class Picture:
     # 그림 객체 그리기
     def draw_Picture(self):
         screen.blit(self.__object, self.__pos)
+
+class A:  #개인정보 저장, 반환, 접근
+    def __init__(self, nickname, icon, birth, classroom, admin, aready):  #생성자
+        self.__nickname=nickname
+        self.__icon=icon
+        self.__birth=birth
+        self.__classroom=classroom
+        self.__admin=admin
+        self.__aready=aready
+    
+    def get_nickname(self):  #각각 객체들을 반환
+        return self.__nickname
+    def get_icon(self):
+        return self.__icon
+    def get_birth(self):
+        return self.__birth
+    def get_classroom(self):
+        return self.__classroom
+    def get_admin(self):
+        return self.__admin
+    def get_aready(self):
+        return self.__aready
+    
+    def s_nickname(self, nickname):  #각각 객체들에 접근
+        self.__nickname=nickname
+    def s_icon(self, icon):
+        self.__icon=icon
+    def s_birth(self, birth):
+        self.__birth=birth
+    def s_classroom(self, classroom):
+        self.__classroom=classroom
+    def s_admin(self, admin):
+        self.__admin=admin
+    def s_aready(self, aready):
+        self.__aready=aready
+
+class A1 (A):  #개인정보 입력 받기
+    def __init__(self, nickname, icon, birth, classroom, admin, aready):  #생성자
+        super().__init__(nickname, icon, birth, classroom, admin, aready)
+    def input (nickname, icon, birth, classroom, admin, aready):  #개인정보 입력
+        if aready==False:
+            pass  #처음 앱 설치 시(5번째 슬라이드) UI 보여주기
+            self.s_nickname(nickname)
+            self.s_icon(icon)
+            self.s_birth(birth)
+            self.s_classroom(classroom)
+            self.s_
